@@ -56,8 +56,6 @@ enum BoundaryGenerator {
     }
 }
 
-private func temporaryFileURL() -> URL { BaseTestCase.testDirectoryURL.appendingPathComponent(UUID().uuidString) }
-
 // MARK: -
 
 class MultipartFormDataPropertiesTestCase: BaseTestCase {
@@ -175,7 +173,6 @@ class MultipartFormDataEncodingTestCase: BaseTestCase {
         }
     }
 
-    #if !SWIFT_PACKAGE
     func testEncodingFileBodyPart() {
         // Given
         let multipartFormData = MultipartFormData()
@@ -421,17 +418,16 @@ class MultipartFormDataEncodingTestCase: BaseTestCase {
             XCTAssertEqual(encodedData, expectedData, "data should match expected data")
         }
     }
-    #endif
 }
 
 // MARK: -
 
-class MultipartFormDataWriteEncodedDataToDiskTestCase: BaseTestCase {
+final class MultipartFormDataWriteEncodedDataToDiskTestCase: BaseTestCase {
     let crlf = EncodingCharacters.crlf
 
     func testWritingEncodedDataBodyPartToDisk() {
         // Given
-        let fileURL = temporaryFileURL()
+        let fileURL = temporaryFileURL
         let multipartFormData = MultipartFormData()
 
         let data = Data("Lorem ipsum dolor sit amet.".utf8)
@@ -466,7 +462,7 @@ class MultipartFormDataWriteEncodedDataToDiskTestCase: BaseTestCase {
 
     func testWritingMultipleEncodedDataBodyPartsToDisk() {
         // Given
-        let fileURL = temporaryFileURL()
+        let fileURL = temporaryFileURL
         let multipartFormData = MultipartFormData()
 
         let frenchData = Data("français".utf8)
@@ -512,10 +508,9 @@ class MultipartFormDataWriteEncodedDataToDiskTestCase: BaseTestCase {
         }
     }
 
-    #if !SWIFT_PACKAGE
     func testWritingEncodedFileBodyPartToDisk() {
         // Given
-        let fileURL = temporaryFileURL()
+        let fileURL = temporaryFileURL
         let multipartFormData = MultipartFormData()
 
         let unicornImageURL = url(forResource: "unicorn", withExtension: "png")
@@ -554,7 +549,7 @@ class MultipartFormDataWriteEncodedDataToDiskTestCase: BaseTestCase {
 
     func testWritingMultipleEncodedFileBodyPartsToDisk() {
         // Given
-        let fileURL = temporaryFileURL()
+        let fileURL = temporaryFileURL
         let multipartFormData = MultipartFormData()
 
         let unicornImageURL = url(forResource: "unicorn", withExtension: "png")
@@ -603,7 +598,7 @@ class MultipartFormDataWriteEncodedDataToDiskTestCase: BaseTestCase {
 
     func testWritingEncodedStreamBodyPartToDisk() {
         // Given
-        let fileURL = temporaryFileURL()
+        let fileURL = temporaryFileURL
         let multipartFormData = MultipartFormData()
 
         let unicornImageURL = url(forResource: "unicorn", withExtension: "png")
@@ -649,7 +644,7 @@ class MultipartFormDataWriteEncodedDataToDiskTestCase: BaseTestCase {
 
     func testWritingMultipleEncodedStreamBodyPartsToDisk() {
         // Given
-        let fileURL = temporaryFileURL()
+        let fileURL = temporaryFileURL
         let multipartFormData = MultipartFormData()
 
         let unicornImageURL = url(forResource: "unicorn", withExtension: "png")
@@ -711,7 +706,7 @@ class MultipartFormDataWriteEncodedDataToDiskTestCase: BaseTestCase {
 
     func testWritingMultipleEncodedBodyPartsWithVaryingTypesToDisk() {
         // Given
-        let fileURL = temporaryFileURL()
+        let fileURL = temporaryFileURL
         let multipartFormData = MultipartFormData()
 
         let loremData = Data("Lorem ipsum.".utf8)
@@ -773,7 +768,6 @@ class MultipartFormDataWriteEncodedDataToDiskTestCase: BaseTestCase {
             XCTFail("file data should not be nil")
         }
     }
-    #endif
 }
 
 // MARK: -
@@ -868,7 +862,7 @@ class MultipartFormDataFailureTestCase: BaseTestCase {
 
     func testThatWritingEncodedDataToExistingFileURLFails() {
         // Given
-        let fileURL = temporaryFileURL()
+        let fileURL = temporaryFileURL
 
         var writerError: Error?
 
